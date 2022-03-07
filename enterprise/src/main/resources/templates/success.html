@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Plant Diary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+  <script type="text/javascript">
+        $(function() {
+            $("#Plant_Name").autocomplete({
+               source: ["Eastern Redbud", "Eastern White Pine", "Eastern Red Cedar"],
+               minLength: 2
+            });
+        });
+    </script>
+</head>
+<body>
+  <div th:replace="fragments/topnav :: navbar"></div>
+
+  <!--    <form action="#" th:action="@{/plants}" method="GET">-->
+  <!--        <label for="searchTerm">Search</label><input type="text" name="searchTerm" id="searchTerm">-->
+  <!--        <button name="submit" type="submit" value="0">Search</button>-->
+  <!--    </form>-->
+
+  Plants are things!
+  <p th:text="${specimen}" />
+
+  <form action="#" th:action="@{/saveSpecimen}" th:object="${specimen}" enctype="multipart/form-data" method="post"><br/>
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="latitude">Latitude</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="latitude" th:field="*{latitude}"/>
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="longitude">Longitude</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="longitude" th:field="*{longitude}"/>
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="description">Description</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="description" th:field="*{description}"/>
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="plantId">Plant</span>
+      <input id="Plant_Name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="plantId" th:field="*{plantId}"/>
+    </div>
+
+    <!--        this was on his video but i was missing it... possibly on autocomplete vids i skipped-->
+    <!--        <input id="Plant_Id" type="hidden" name="plantId" th:field="*{plantId}"/>-->
+    <input type="file" name="imageFile"/>
+    <!--        <button name="submit" type="submit" value="0">Submit</button>-->
+    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+  </form>
+
+<!--  QUIRK WHEN DISPLAYING IMAGE: image is being saved within the static folder and this is only checked at the beginning of runtime (https://stackoverflow.com/questions/41333013/spring-boot-thymeleaf-load-uploaded-image-without-application-server-restart)-->
+  <img th:src="@{${'photos/' + photo.fileName}}" alt="Photo upload confirmation"/>
+</body>
+</html>
+

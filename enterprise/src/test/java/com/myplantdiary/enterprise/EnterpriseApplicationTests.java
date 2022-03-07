@@ -3,11 +3,9 @@ package com.myplantdiary.enterprise;
 import com.myplantdiary.enterprise.dao.ISpecimenDAO;
 import com.myplantdiary.enterprise.dto.Specimen;
 import com.myplantdiary.enterprise.service.ISpecimenService;
-import com.myplantdiary.enterprise.service.SpecimenServiceStub;
-import org.junit.jupiter.api.Assertions;
+import com.myplantdiary.enterprise.service.SpecimenService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -30,13 +28,21 @@ class EnterpriseApplicationTests {
 	@Test
 	void fetchSpecimenByID_returnsRedbudforID83() throws Exception {
 		givenSpecimenDataAreAvailable();
+		whenSpecimen83AddedIsRedbud();
 		whenSearchSpecimenWithID83();
 		thenReturnOneEasternRedbudSpecimenForID83();
 	}
 
+	private void whenSpecimen83AddedIsRedbud() {
+		Specimen redbud = new Specimen();
+		redbud.setSpecimenId(83);
+		redbud.setDescription("Eastern Redbud");
+		Mockito.when(specimenDAO.fetch(83)).thenReturn(redbud);
+	}
+
 	private void givenSpecimenDataAreAvailable() throws Exception {
 		Mockito.when(specimenDAO.save(specimen)).thenReturn(specimen);
-		specimenService = new SpecimenServiceStub(specimenDAO);
+		specimenService = new SpecimenService(specimenDAO);
 	}
 
 	private void whenSearchSpecimenWithID83() {
